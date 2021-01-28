@@ -197,7 +197,8 @@ class Codoon:
             raise Exception("get runs records error")
 
         runs = r.json()["data"]["log_list"]
-        if r.json()["data"]["has_more"] == "true":
+        runs = [run for run in runs if run["sports_type"] == 1]
+        if r.json()["data"]["has_more"]:
             return runs + self.get_runs_records(page + 1)
         return runs
 
@@ -251,6 +252,8 @@ class Codoon:
         return gpx.to_xml()
 
     def get_single_run_record(self, route_id):
+        time.sleep(0.2)
+        print(route_id)
         payload = {
             "route_id": route_id,
         }
